@@ -43,14 +43,14 @@ $message = array();
 
 switch ($decoded['action']) {
 
-    case 'getClima':
+    case 'getRecomendacion':
         if (!(isset($decoded['idciudad']) && !is_null($decoded['idciudad']))) {
             $message["message"] = "E2";
             jsonView($message);
         } else {
             $params = $decoded;
             $myAPI = new APIClima();
-            if (($data = $myAPI->getClima($decoded['idciudad']))) {
+            if (($data = $myAPI->getRecomendacion($decoded['idciudad']))) {
                 $message = $data;
                 jsonView($message);
             } else {
@@ -73,5 +73,8 @@ function jsonView($message)
 {
 
     header('Content-type: application/json; charset=utf-8');
-    print $message;
+    print json_encode($message, JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_HEX_TAG |
+        JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE |
+        JSON_PRETTY_PRINT);
+    //print $message;
 }
