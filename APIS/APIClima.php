@@ -66,11 +66,13 @@ class APIClima
         $clima = json_decode($clima5Dias, true);
         $recomendacion = array("ciudad" => $clima['city']['name']);
         $i = 0;
+
+
         foreach ($clima['list'] as $dia) {
 
-            $fecha = new DateTime('2018-02-11 06:00:00');
+            $fecha = new DateTime($dia['dt_txt']);
             $fecha = $fecha->format('Y-m-d');
-            $hora = new DateTime('2018-02-11 06:00:00');
+            $hora = new DateTime($dia['dt_txt']);
             $hora = $hora->format('G:ia');
 
             $temp = number_format(floatval($dia['main']['temp']) - 275.15
@@ -80,7 +82,7 @@ class APIClima
             $temp_max = number_format(floatval($dia['main']['temp_max']) - 275.15
                 , 2);
 
-            //if ($['dt_txt']) {
+
                 array_push($recomendacion,
                     array(
                         "temp" => $temp,
@@ -92,14 +94,13 @@ class APIClima
                         "icono" => $dia['weather'][0]['icon'],
                         "nubes" => $dia['clouds']['all'],
                         "viento" => $dia['wind']['speed'],
-                        "fecha" => $dia['dt_txt'],
+                        "hora" => $hora,
+                        "fecha" => $fecha,
                         "recomendacion" => $this->recomendacionXHora($temp)
                     ));
-            }
-        //}
 
+        }
         return $recomendacion;
-
     }
 
     private function recomendacionXHora($temp)
